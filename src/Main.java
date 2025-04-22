@@ -10,8 +10,8 @@ public class Main {
         frame.setMinimumSize(new Dimension(1000,1000));
         frame.setLocationRelativeTo(null);
 
-        BanCo banCo= new BanCo();
-        frame.add(banCo);
+
+        frame.add(new TrangChu(frame));
 
         frame.setVisible(true);
     }

@@ -14,4 +14,14 @@ public class Move {
         this.quanCo=quanCo;
         this.quanCo2= banCo.getVitri(newCol,newRow);
     }
+
+    @Override
+    public String toString() {
+        return "Move{" + quanCo.name+
+                "oldCol=" + oldCol +
+                ", oldRow=" + oldRow +
+                ", newCol=" + newCol +
+                ", newRow=" + newRow +
+                '}';
+    }
 }
