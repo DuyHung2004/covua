@@ -10,6 +10,7 @@ public class BanCo extends JPanel implements Cloneable {
     public int size=90;
      int cols=8;
      int rows=8;
+    private boolean rotateBoard = false;
     ArrayList<QuanCo> quanCos=new ArrayList<>();
     Input input = new Input(this);
     public QuanCo quancochon;
@@ -65,6 +66,7 @@ public class BanCo extends JPanel implements Cloneable {
     public BanCo(JFrame frame,boolean bot) throws IOException {
         this.setLayout(new BorderLayout());
         this.bot=bot;
+        this.rotateBoard = !bot;
         backButton = new JButton("Trở Về Trang Chủ");
         backButton.addActionListener(e -> {
             frame.getContentPane().removeAll();
@@ -80,6 +82,9 @@ public class BanCo extends JPanel implements Cloneable {
             @Override
             public void paintComponent(Graphics g){
                 Graphics2D graphics2D= (Graphics2D) g;
+                if (rotateBoard && !isWhitetoMove) {
+                    graphics2D.rotate(Math.PI, getWidth()/2, getHeight()/2);
+                }
                 for(int i=0;i<rows;i++){
                     for (int j=0;j<cols;j++){
                         graphics2D.setColor((i+j)%2==0 ? Color.green :Color.WHITE);
@@ -113,7 +118,10 @@ public class BanCo extends JPanel implements Cloneable {
         // 5. Khởi tạo quân cờ
         add();
     }
-
+    public void setRotateBoard(boolean rotate) {
+        this.rotateBoard = rotate;
+        repaint();
+    }
 
     public BanCo(BanCo oldBoard) throws CloneNotSupportedException {
         this.size = oldBoard.size;
@@ -173,6 +181,9 @@ public class BanCo extends JPanel implements Cloneable {
             capture(move.quanCo2);
 
             this.isWhitetoMove=!this.isWhitetoMove;
+        if (!bot) {
+            setRotateBoard(!isWhitetoMove);
+        }
             repaint();
             updateGameState();
 
@@ -465,6 +476,9 @@ public class BanCo extends JPanel implements Cloneable {
         for (QuanCo quanCo :quanCos){
             quanCo.paint(graphics2D);
         }
+    }
+    public boolean isRotated() {
+        return !isWhitetoMove && !bot; // Xoay khi là lượt đối phương và chơi với bạn
     }
     public BanCo makeMove(Move move) throws CloneNotSupportedException {
         BanCo newBoard = new BanCo(this);
